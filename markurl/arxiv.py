@@ -1,46 +1,26 @@
 """
 arXiv API
-1. Get HTML content from arxiv URL
-2. Output Markdown format: `title, first author, 'arXiv', year, URL`
+
+Get info by arXiv_ID or title using arxiv api
 """
 
 import re
-from urllib.parse import quote
-from unidecode import unidecode
+import logging
 
 from bs4 import BeautifulSoup
 import feedparser
 
-from markurl.util import get_html
+from markurl.util import get_html, quote_url
 
 
-def get_arxiv_info(url: str):
-    """
-    Get arxiv info from url
-    """
-    # html = requests.get(url).text
-    # soup = BeautifulSoup(html, 'html.parser')
-    soup = BeautifulSoup(get_html(url), 'html.parser')
-    title = re.sub('Title:', '', soup.find('h1', {'class': 'title mathjax'}).text.strip())
-    authors = re.sub('Authors:', '', soup.find('div', {'class': 'authors'}).text.strip())
-    first_author = authors.split(',')[0]
-    year = soup.find('div', {'class': 'dateline'}).text.strip()
-    year = re.search(r'\d{4}', year).group()
-    return {
-        'title': title,
-        'first_author': first_author,
-        'journal': 'arXiv',
-        'year': year,
-        'url': url,
-        'citations': None,
-    }
+logger = logging.getLogger('markurl')
 
 
 class ArxivAdapter(object):
     base_url = "http://export.arxiv.org/api/query?search_query={}:{}"
 
-    def get_info(self, url: str):
-        infos = feedparser.parse(url)['entries'][0]
+    @staticmethod
+    def get_info(infos: dict) -> dict:
         return {
             'title': infos['title'],
             'author': infos['author'],
@@ -51,16 +31,48 @@ class ArxivAdapter(object):
             'citations': None,
         }
 
-    def get_info_by_id(self, arxiv_id: str) -> dict:
+    @classmethod
+    def get_info_by_id(cls, arxiv_id: str) -> dict:
         try:
-            url = self.base_url.format('id', arxiv_id)
-            return self.get_info(url)
+            arxiv_id = re.findall('\d{4}\.\d{5}', arxiv_id)[0]
+            url = cls.base_url.format('id', arxiv_id)
+            infos = feedparser.parse(url)['entries'][0]
+            return cls.get_info(infos)
         except:
-            print(f"DOI: {arxiv_id} is error")
+            logging.warning(f"DOI: {arxiv_id} not found")
 
-    def get_info_by_title(self, title: str) -> dict:
+    @classmethod
+    def get_info_by_title(cls, title: str) -> dict:
         try:
-            url = self.base_url.format('ti', quote(unidecode(title)))
-            return self.get_info(url)
+            url = cls.base_url.format('ti', quote_url(title))
+            infos = {}
+            for item in feedparser.parse(url)['entries']:
+                if re.match(f".*{title.lower()}.*", item['title'].lower()) is not None:
+                    infos = item
+                    break
+            return cls.get_info(infos)
         except:
-            print(f"Title: {title} not found")
+            logging.warning(f"Title: {title} not found")
+
+    @classmethod
+    def get_info_by_url(cls, url: str) -> dict:
+        try:
+            soup = BeautifulSoup(get_html(url), 'html.parser')
+            title = re.sub('Title:', '', soup.find(
+                'h1', {'class': 'title mathjax'}).text.strip())
+            authors = re.sub('Authors:', '', soup.find(
+                'div', {'class': 'authors'}).text.strip())
+            first_author = authors.split(',')[0]
+            year = soup.find('div', {'class': 'dateline'}).text.strip()
+            year = re.search(r'\d{4}', year).group()
+            return {
+                'title': title,
+                'author': first_author,
+                'journal': 'arXiv',
+                'year': year,
+                'url': url,
+                'pdf': re.sub('abs', 'pdf', url),
+                'citations': None,
+            }
+        except:
+            logging.warning(f"URL: {url} not found")
