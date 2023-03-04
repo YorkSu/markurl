@@ -6,16 +6,15 @@ Get info by DOI or title using Crossref api
 
 import re
 import logging
-from urllib.parse import quote
-from unidecode import unidecode
 
+from markurl.adapter.adapter import Adapter
 from markurl.util import SESS, quote_url
 
 
 logger = logging.getLogger('markurl')
 
 
-class CrossrefAdapter(object):
+class CrossrefAdapter(Adapter):
     base_url = "http://api.crossref.org/works{}"
 
     @staticmethod
@@ -29,17 +28,21 @@ class CrossrefAdapter(object):
                         author['given']
                     ])
         
-        journal = 'No journal'
+        source = 'No journal'
         if 'short-container-title' in infos and len(infos['short-container-title']):
-            journal = infos['short-container-title'][0]
+            source = infos['short-container-title'][0]
         elif 'container-title' in infos and len(infos['container-title']):
-            journal = infos['container-title'][0]
-        
+            source = infos['container-title'][0]
+
         return {
+            'type': 'Paper',
             'title': infos['title'][0],
             'author': first_author,
-            'journal': journal,
-            'year': infos['published']['date-parts'][0][0],
+            'source': source,
+            'year': '-'.join(map(
+                str, 
+                infos['published']['date-parts'][0]
+            )),
             'url': infos['URL'],
             'pdf': infos['link'][0]['URL'],
             'citations': infos['is-referenced-by-count'],
@@ -52,8 +55,8 @@ class CrossrefAdapter(object):
             infos = SESS.get(url).json()["message"]
             return cls.get_info(infos)
         except Exception as e:
-            print(e)
-            print(f"DOI: {doi} not found")
+            logging.warning(e)
+            logging.warning(f"DOI: {doi} not found")
 
     @classmethod
     def get_info_by_title(cls, title: str) -> dict:
@@ -64,8 +67,8 @@ class CrossrefAdapter(object):
                 if item['title'][0].lower() == title.lower():
                     return cls.get_info(item)
         except Exception as e:
-            print(e)
-            print(f"Title: {title} not found")
+            logging.warning(e)
+            logging.warning(f"Title: {title} not found")
 
     @classmethod
     def get_info_by_url(cls, url: str) -> dict:
@@ -73,4 +76,4 @@ class CrossrefAdapter(object):
             doi = re.findall('10[.][0-9]{4,}(?:[.][0-9]+)*\/[^\s]+', url)[0]
             return cls.get_info_by_id(doi)
         except:
-            print(f"URL: {url} not found")
+            logging.warning(f"URL: {url} not found")

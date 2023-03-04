@@ -2,8 +2,9 @@ import re
 import logging
 from typing import Callable
 
-from markurl.arxiv import ArxivAdapter
-from markurl.crossref import CrossrefAdapter
+from markurl.adapter.arxiv import ArxivAdapter
+from markurl.adapter.bilibili import BilibiliAdapter
+from markurl.adapter.crossref import CrossrefAdapter
 
 
 logger = logging.getLogger('markurl')
@@ -25,6 +26,11 @@ def title_adapter(url: str) -> dict:
 
 
 def get_adapter(url: str) -> Callable:
+    # Bilibili
+    if BilibiliAdapter.extract(url):
+        logger.info('Bilibili Adapter')
+        return BilibiliAdapter.get_info_extract
+    
     # arXiv
     if re.match('.*arxiv.org.*', url) is not None:
         logger.info('arXiv Adapter, url')

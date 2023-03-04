@@ -12,7 +12,7 @@ HEADERS = {
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:27.0) Gecko/20100101 Firefox/27.0'}
 SESS = requests.Session()
 SESS.headers = HEADERS
-SESS.proxies = {'http': '127.0.0.1:7890', 'https': '127.0.0.1:7890'}
+# SESS.proxies = {'http': '127.0.0.1:7890', 'https': '127.0.0.1:7890'}
 
 
 def get_html(url: str) -> str:
@@ -35,12 +35,28 @@ def quote_url(url: str) -> str:
 
 def info_to_markdown(info: dict) -> str:
     """
-    Output Markdown format: `title, first author, journal, year, URL, citations`
+    Output Markdown format: `title, author, source, year, URL, citations`
     """
+    pattern = "**{type}:** {title}, {author}, {source}, {date}, [URL]({url}){additional}"
+    additional = []
+    if info.get('pdf', None):
+        additional.append(f", [PDF]({info['pdf']})")
+    if info.get('citations', None):
+        additional.append(f", {info['citations']}")
+    return pattern.format(
+        type=info['type'],
+        title=info['title'],
+        author=info['author'],
+        source=info['source'],
+        date=info['year'],
+        url=info['url'],
+        additional=''.join(additional) if len(additional) else ''
+    )
+
     pre_text = [
-        info['title'],
+        f"**{info['type']}:** {info['title']}",
         info['author'],
-        info['journal'],
+        info['source'],
         info['year'],
         f"[URL]({info['url']})",
     ]

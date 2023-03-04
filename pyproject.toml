@@ -1,7 +1,7 @@
 [project]
 name = "markurl"
 version = "0.1.0"
-description = ""
+description = "A tool for generating formatted Markdown from URLs"
 authors = [
     {name = "YorkSu", email = "york_su@qq.com"},
 ]

@@ -1,0 +1,4 @@
+
+
+class Adapter(object):
+    ...
