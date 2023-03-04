@@ -10,22 +10,25 @@ import logging
 from bs4 import BeautifulSoup
 import feedparser
 
+from markurl.adapter.adapter import Adapter
 from markurl.util import get_html, quote_url
 
 
 logger = logging.getLogger('markurl')
 
 
-class ArxivAdapter(object):
+class ArxivAdapter(Adapter):
     base_url = "http://export.arxiv.org/api/query?search_query={}:{}"
 
     @staticmethod
     def get_info(infos: dict) -> dict:
         return {
+            'type': 'Paper',
             'title': infos['title'],
             'author': infos['author'],
-            'journal': 'arXiv',
-            'year': infos['published_parsed'][0],
+            'source': 'arXiv',
+            # 'year': infos['published_parsed'][0],
+            'year': infos['published'].split('T')[0],
             'url': infos['link'],
             'pdf': re.sub('abs', 'pdf', infos['link']),
             'citations': None,
@@ -37,6 +40,7 @@ class ArxivAdapter(object):
             arxiv_id = re.findall('\d{4}\.\d{5}', arxiv_id)[0]
             url = cls.base_url.format('id', arxiv_id)
             infos = feedparser.parse(url)['entries'][0]
+            # logger.info(infos)
             return cls.get_info(infos)
         except:
             logging.warning(f"DOI: {arxiv_id} not found")
@@ -66,9 +70,10 @@ class ArxivAdapter(object):
             year = soup.find('div', {'class': 'dateline'}).text.strip()
             year = re.search(r'\d{4}', year).group()
             return {
+                'type': 'Paper',
                 'title': title,
                 'author': first_author,
-                'journal': 'arXiv',
+                'source': 'arXiv',
                 'year': year,
                 'url': url,
                 'pdf': re.sub('abs', 'pdf', url),
