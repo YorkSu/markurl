@@ -15,10 +15,15 @@ logger.setLevel(logging.DEBUG)
 
 
 HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:27.0) Gecko/20100101 Firefox/27.0'}
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.63'
+}
+PROXIES = {
+    'http': 'http://127.0.0.1:7890',
+    'https': 'http://127.0.0.1:7890'
+}
 SESS = requests.Session()
 SESS.headers = HEADERS
-# SESS.proxies = {'http': '127.0.0.1:7890', 'https': '127.0.0.1:7890'}
+# SESS.proxies = PROXIES
 
 
 def get_html(url: str) -> Response:

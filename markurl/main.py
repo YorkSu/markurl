@@ -16,10 +16,8 @@ parser.add_argument(
 )
 am = AdapterManager()
 am.extend(
-    video.BilibiliAdapter,
-    paper.CrossrefAdapter,
-    paper.ArxivAdapter,
-    paper.TitleAdapter
+    *video.adapters,
+    *paper.adapters,
 )
 
 
