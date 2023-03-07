@@ -1,7 +1,7 @@
 """
 Utils
 """
-
+import re
 
 import requests
 from urllib.parse import quote
@@ -31,6 +31,10 @@ def get_html(url: str) -> str:
 
 def quote_url(url: str) -> str:
     return quote(unidecode(url))
+
+
+def clear_str(s: str) -> str:
+    return re.sub(r"\n", '', s).strip()
 
 
 def info_to_markdown(info: dict) -> str:
