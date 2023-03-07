@@ -2,9 +2,9 @@ import re
 import logging
 from typing import Callable
 
-from markurl.adapter.arxiv import ArxivAdapter
+from dev.old_test.arxiv import ArxivAdapter
 from markurl.adapter.bilibili import BilibiliAdapter
-from markurl.adapter.crossref import CrossrefAdapter
+from dev.old_test.crossref import CrossrefAdapter
 
 
 logger = logging.getLogger('markurl')

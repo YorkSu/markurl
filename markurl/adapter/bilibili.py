@@ -2,7 +2,7 @@ import re
 
 from bs4 import BeautifulSoup
 
-from markurl.adapter.adapter import Adapter
+from dev.old_test.adapter import Adapter
 from markurl.util import SESS
 
 
