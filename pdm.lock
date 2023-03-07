@@ -40,15 +40,6 @@ version = "3.0.1"
 summary = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
 
 [[package]]
-name = "feedparser"
-version = "6.0.10"
-requires_python = ">=3.6"
-summary = "Universal feed parser, handles RSS 0.9x, RSS 1.0, RSS 2.0, CDF, Atom 0.3, and Atom 1.0 feeds"
-dependencies = [
-    "sgmllib3k",
-]
-
-[[package]]
 name = "idna"
 version = "3.4"
 requires_python = ">=3.5"
@@ -67,6 +58,12 @@ requires_python = ">=3.6"
 summary = "Python style guide checker"
 
 [[package]]
+name = "pytube"
+version = "12.1.2"
+requires_python = ">=3.6"
+summary = "Python 3 library for downloading YouTube Videos."
+
+[[package]]
 name = "requests"
 version = "2.28.2"
 requires_python = ">=3.7, <4"
@@ -77,11 +74,6 @@ dependencies = [
     "idna<4,>=2.5",
     "urllib3<1.27,>=1.21.1",
 ]
-
-[[package]]
-name = "sgmllib3k"
-version = "1.0.0"
-summary = "Py3k port of sgmllib."
 
 [[package]]
 name = "soupsieve"
@@ -109,7 +101,7 @@ summary = "HTTP library with thread-safe connection pooling, file post, and more
 
 [metadata]
 lock_version = "4.1"
-content_hash = "sha256:36ae4c03b99da009928cef2a674681e352e24fbbbc93fc6c0daddd175b0258cd"
+content_hash = "sha256:35d3d0f85d747802cc7e47117f029bd1b2363bda7548659d59c9bced7adfe336"
 
 [metadata.files]
 "autopep8 2.0.1" = [
@@ -217,10 +209,6 @@ content_hash = "sha256:36ae4c03b99da009928cef2a674681e352e24fbbbc93fc6c0daddd175
     {url = "https://pypi.tuna.tsinghua.edu.cn/packages/f5/ec/a9bed59079bd0267d34ada58a4048c96a59b3621e7f586ea85840d41831d/charset_normalizer-3.0.1-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:356541bf4381fa35856dafa6a965916e54bed415ad8a24ee6de6e37deccf2786"},
     {url = "https://pypi.tuna.tsinghua.edu.cn/packages/fc/64/443267b7824283b3e0e33cee4240c079939a970c2c9a5a3164fc988d690b/charset_normalizer-3.0.1-cp37-cp37m-win_amd64.whl", hash = "sha256:2c03cc56021a4bd59be889c2b9257dae13bf55041a3372d3295416f86b295fb5"},
 ]
-"feedparser 6.0.10" = [
-    {url = "https://pypi.tuna.tsinghua.edu.cn/packages/63/9a/824e3c036dec4f0adb4e7c36dcf4cbffc9ee317a4985218cb1663c7ab4ad/feedparser-6.0.10.tar.gz", hash = "sha256:27da485f4637ce7163cdeab13a80312b93b7d0c1b775bef4a47629a3110bca51"},
-    {url = "https://pypi.tuna.tsinghua.edu.cn/packages/92/1e/741fd94cf2855d251712868f2183cb6485a28daaa3947e1a7046dc036aca/feedparser-6.0.10-py3-none-any.whl", hash = "sha256:79c257d526d13b944e965f6095700587f27388e50ea16fd245babe4dfae7024f"},
-]
 "idna 3.4" = [
     {url = "https://pypi.tuna.tsinghua.edu.cn/packages/8b/e1/43beb3d38dba6cb420cefa297822eac205a277ab43e5ba5d5c46faf96438/idna-3.4.tar.gz", hash = "sha256:814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"},
     {url = "https://pypi.tuna.tsinghua.edu.cn/packages/fc/34/3030de6f1370931b9dbb4dad48f6ab1015ab1d32447850b9fc94e60097be/idna-3.4-py3-none-any.whl", hash = "sha256:90b77e79eaa3eba6de819a0c442c0b4ceefc341a7a2ab77d7562bf49f425c5c2"},
@@ -308,12 +296,13 @@ content_hash = "sha256:36ae4c03b99da009928cef2a674681e352e24fbbbc93fc6c0daddd175
     {url = "https://pypi.tuna.tsinghua.edu.cn/packages/06/6b/5ca0d12ef7dcf7d20dfa35287d02297f3e0f9e515da5183654c03a9636ce/pycodestyle-2.10.0.tar.gz", hash = "sha256:347187bdb476329d98f695c213d7295a846d1152ff4fe9bacb8a9590b8ee7053"},
     {url = "https://pypi.tuna.tsinghua.edu.cn/packages/a2/54/001fdc0d69e8d0bb86c3423a6fa6dfada8cc26317c2635ab543e9ac411bd/pycodestyle-2.10.0-py2.py3-none-any.whl", hash = "sha256:8a4eaf0d0495c7395bdab3589ac2db602797d76207242c17d470186815706610"},
 ]
+"pytube 12.1.2" = [
+    {url = "https://pypi.tuna.tsinghua.edu.cn/packages/f2/91/77ad694c46184f950eddba831b15e229890f50887beaa90da9e6622552bd/pytube-12.1.2.tar.gz", hash = "sha256:2d34a484f81cae106ea84e8c00871f97dcc293e8ed8c074e65abc4119f02c98f"},
+    {url = "https://pypi.tuna.tsinghua.edu.cn/packages/fb/61/d53566d4634f3f27b60867f054330b3ec1d22d399e20a9708a1a00471987/pytube-12.1.2-py3-none-any.whl", hash = "sha256:a844800002744f33107f4440543f9a5f1fd9fcd97dad35cf2dd4803212352d9a"},
+]
 "requests 2.28.2" = [
     {url = "https://pypi.tuna.tsinghua.edu.cn/packages/9d/ee/391076f5937f0a8cdf5e53b701ffc91753e87b07d66bae4a09aa671897bf/requests-2.28.2.tar.gz", hash = "sha256:98b1b2782e3c6c4904938b84c0eb932721069dfdb9134313beff7c83c2df24bf"},
     {url = "https://pypi.tuna.tsinghua.edu.cn/packages/d2/f4/274d1dbe96b41cf4e0efb70cbced278ffd61b5c7bb70338b62af94ccb25b/requests-2.28.2-py3-none-any.whl", hash = "sha256:64299f4909223da747622c030b781c0d7811e359c37124b4bd368fb8c6518baa"},
-]
-"sgmllib3k 1.0.0" = [
-    {url = "https://pypi.tuna.tsinghua.edu.cn/packages/9e/bd/3704a8c3e0942d711c1299ebf7b9091930adae6675d7c8f476a7ce48653c/sgmllib3k-1.0.0.tar.gz", hash = "sha256:7868fb1c8bfa764c1ac563d3cf369c381d1325d36124933a726f29fcdaa812e9"},
 ]
 "soupsieve 2.4" = [
     {url = "https://pypi.tuna.tsinghua.edu.cn/packages/1b/cb/34933ebdd6bf6a77daaa0bd04318d61591452eb90ecca4def947e3cb2165/soupsieve-2.4.tar.gz", hash = "sha256:e28dba9ca6c7c00173e34e4ba57448f0688bb681b7c5e8bf4971daafc093d69a"},

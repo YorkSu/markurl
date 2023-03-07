@@ -174,3 +174,10 @@ class TitleAdapter(Adapter):
             logger.exception(f"Crossref Title: {query} not found")
 
         return None
+
+
+adapters = (
+    ArxivAdapter,
+    CrossrefAdapter,
+    TitleAdapter,
+)
