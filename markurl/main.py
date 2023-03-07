@@ -5,8 +5,8 @@ Main
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 
 from markurl.adapter import paper
+from markurl.adapter import video
 from markurl.model import AdapterManager
-
 
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 parser.add_argument(
@@ -15,11 +15,12 @@ parser.add_argument(
     help="the url of resource"
 )
 am = AdapterManager()
-am.extend([
+am.extend(
+    video.BilibiliAdapter,
     paper.CrossrefAdapter,
     paper.ArxivAdapter,
     paper.TitleAdapter
-])
+)
 
 
 def main():

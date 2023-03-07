@@ -18,7 +18,6 @@ from bs4 import BeautifulSoup
 from markurl.model import Info, Adapter
 from markurl.util import SESS, quote_url, clear_str
 
-
 logger = logging.getLogger('markurl')
 
 

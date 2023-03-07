@@ -1,5 +1,5 @@
 import abc
-from typing import Optional, Iterable
+from typing import Optional, Type, TypeVar
 
 
 class Info(object):
@@ -70,11 +70,14 @@ class Adapter(abc.ABC):
         return cls._next_adapter
 
 
-class AdapterManager(object):
-    head: Adapter = None
-    rear: Adapter = None
+AdapterSubclass = TypeVar('AdapterSubclass', bound=Type[Adapter])
 
-    def append(self, adapter: Adapter):
+
+class AdapterManager(object):
+    head: AdapterSubclass = None
+    rear: AdapterSubclass = None
+
+    def append(self, adapter: AdapterSubclass):
         if self.head is None:
             self.head = adapter
             self.rear = adapter
@@ -82,7 +85,7 @@ class AdapterManager(object):
             self.rear.set_next_adapter(adapter)
             self.rear = adapter
 
-    def extend(self, adapters: Iterable[Adapter]):
+    def extend(self, *adapters: AdapterSubclass):
         for adapter in adapters:
             self.append(adapter)
 

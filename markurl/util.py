@@ -1,11 +1,17 @@
 """
 Utils
 """
+import logging
 import re
+from urllib.parse import quote
 
 import requests
-from urllib.parse import quote
+from requests import Response
 from unidecode import unidecode
+
+logging.basicConfig()
+logger = logging.getLogger('markurl')
+logger.setLevel(logging.DEBUG)
 
 
 HEADERS = {
@@ -15,7 +21,7 @@ SESS.headers = HEADERS
 # SESS.proxies = {'http': '127.0.0.1:7890', 'https': '127.0.0.1:7890'}
 
 
-def get_html(url: str) -> str:
+def get_html(url: str) -> Response:
     """
     Get HTML content from arxiv URL
     """
@@ -23,10 +29,9 @@ def get_html(url: str) -> str:
         r = SESS.get(url)
         r.raise_for_status()
         r.encoding = r.apparent_encoding
-        return r.text
-    except:
-        print(f"Error: failed to get HTML content from {url}")
-        return ""
+        return r
+    except Exception:
+        logger.exception(f"Error: failed to get HTML content from {url}")
 
 
 def quote_url(url: str) -> str:
@@ -35,35 +40,3 @@ def quote_url(url: str) -> str:
 
 def clear_str(s: str) -> str:
     return re.sub(r"\n", '', s).strip()
-
-
-def info_to_markdown(info: dict) -> str:
-    """
-    Output Markdown format: `title, author, source, year, URL, citations`
-    """
-    pattern = "**{type}:** {title}, {author}, {source}, {date}, [URL]({url}){additional}"
-    additional = []
-    if info.get('pdf', None):
-        additional.append(f", [PDF]({info['pdf']})")
-    if info.get('citations', None):
-        additional.append(f", {info['citations']}")
-    return pattern.format(
-        type=info['type'],
-        title=info['title'],
-        author=info['author'],
-        source=info['source'],
-        date=info['year'],
-        url=info['url'],
-        additional=''.join(additional) if len(additional) else ''
-    )
-
-    pre_text = [
-        f"**{info['type']}:** {info['title']}",
-        info['author'],
-        info['source'],
-        info['year'],
-        f"[URL]({info['url']})",
-    ]
-    if info['citations'] is not None:
-        pre_text.append(info['citations'])
-    return ", ".join([str(i) for i in pre_text])
