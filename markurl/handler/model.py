@@ -62,8 +62,8 @@ class Info(object):
         return self.to_markdown()
 
 
-class Adapter(abc.ABC):
-    _next_adapter: 'Adapter' = None
+class Handler(abc.ABC):
+    _next_handler: 'Handler' = None
 
     @classmethod
     @abc.abstractmethod
@@ -71,42 +71,42 @@ class Adapter(abc.ABC):
         ...
 
     @classmethod
-    def set_next_adapter(cls, adapter: 'Adapter'):
-        cls._next_adapter = adapter
+    def set_next_adapter(cls, handler: 'Handler'):
+        cls._next_handler = handler
 
     @classmethod
-    def get_next_adapter(cls) -> 'Adapter':
-        return cls._next_adapter
+    def get_next_adapter(cls) -> 'Handler':
+        return cls._next_handler
 
 
-AdapterSubclass = TypeVar('AdapterSubclass', bound=Type[Adapter])
+HandlerSubclass = TypeVar('HandlerSubclass', bound=Type[Handler])
 
 
 class AdapterManager(object):
-    head: AdapterSubclass = None
-    rear: AdapterSubclass = None
+    head: HandlerSubclass = None
+    rear: HandlerSubclass = None
 
-    def append(self, adapter: AdapterSubclass):
+    def append(self, handler: HandlerSubclass):
         if self.head is None:
-            self.head = adapter
-            self.rear = adapter
+            self.head = handler
+            self.rear = handler
         else:
-            self.rear.set_next_adapter(adapter)
-            self.rear = adapter
+            self.rear.set_next_adapter(handler)
+            self.rear = handler
 
-    def extend(self, *adapters: AdapterSubclass):
-        for adapter in adapters:
-            self.append(adapter)
+    def extend(self, *handlers: HandlerSubclass):
+        for handler in handlers:
+            self.append(handler)
 
-    def adapt(self, url: str) -> Optional[Info]:
+    def handle(self, url: str) -> Optional[Info]:
         # Traverse singly linked list queue
-        adapter = self.head
-        while adapter is not None:
-            _result = adapter.get(url)
+        handler = self.head
+        while handler is not None:
+            _result = handler.get(url)
             if _result is not None:
                 return _result
 
             # Handed over to the next Adapter
-            adapter = adapter.get_next_adapter()
+            handler = handler.get_next_adapter()
 
         return None

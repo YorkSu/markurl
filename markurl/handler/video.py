@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Video Adapters
+Video Handlers
 
-Including BilibiliAdapter, CrossrefAdapter and TitleAdapter.
+Including BilibiliHandler, YouTubeHandler.
 
-- BilibiliAdapter match BVID, bilibili (short) url
+- BilibiliHandler match BVID, bilibili (short) url
+- YouTubeHandler match YouTube (short) url
 
 """
 import logging
@@ -14,13 +15,13 @@ from typing import Optional
 from bs4 import BeautifulSoup
 from pytube import YouTube
 
-from markurl.adapter.model import Info, Adapter
+from markurl.handler.model import Info, Handler
 from markurl.util import SESS, PROXIES, clear_str
 
 logger = logging.getLogger('markurl')
 
 
-class BilibiliAdapter(Adapter):
+class BilibiliHandler(Handler):
     base_url = 'https://www.bilibili.com/video/{}'
 
     @classmethod
@@ -67,7 +68,7 @@ class BilibiliAdapter(Adapter):
         return None
 
 
-class YouTubeAdapter(Adapter):
+class YouTubeHandler(Handler):
     base_url = 'https://www.youtube.com/watch?v={}'
 
     @classmethod
@@ -105,7 +106,7 @@ class YouTubeAdapter(Adapter):
         return None
 
 
-adapters = (
-    BilibiliAdapter,
-    YouTubeAdapter,
+handlers = (
+    BilibiliHandler,
+    YouTubeHandler,
 )
