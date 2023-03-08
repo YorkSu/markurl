@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Paper Adapters
 
@@ -15,7 +16,7 @@ from typing import Optional
 
 from bs4 import BeautifulSoup
 
-from markurl.model import Info, Adapter
+from markurl.adapter.model import Info, Adapter
 from markurl.util import SESS, quote_url, clear_str
 
 logger = logging.getLogger('markurl')

@@ -1,5 +1,10 @@
+# -*- coding: utf-8 -*-
 import abc
 from typing import Optional, Type, TypeVar
+
+from markurl.config import Config
+
+cfg = Config.load_config()
 
 
 class Info(object):
@@ -12,7 +17,7 @@ class Info(object):
     pdf: str = None
     citations: str = None
 
-    pattern = "**{type}:** {title}, {author}, {source}, {date}, [URL]({url}){additional}"
+    _pattern = "**{type}:** {title}, {author}, {source}, {date}, [URL]({url}){additional}"
 
     def __init__(self,
                  type: str = None,
@@ -32,6 +37,10 @@ class Info(object):
         self.url = url
         self.pdf = pdf
         self.citations = citations
+
+    @property
+    def pattern(self):
+        return cfg.get('markdown', {}).get('fmt', self._pattern)
 
     def to_markdown(self):
         additional = []

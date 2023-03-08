@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Video Adapters
 
@@ -13,7 +14,7 @@ from typing import Optional
 from bs4 import BeautifulSoup
 from pytube import YouTube
 
-from markurl.model import Info, Adapter
+from markurl.adapter.model import Info, Adapter
 from markurl.util import SESS, PROXIES, clear_str
 
 logger = logging.getLogger('markurl')
