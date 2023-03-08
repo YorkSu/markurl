@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Paper Adapters
+Paper Handlers
 
-Including ArxivAdapter, CrossrefAdapter and TitleAdapter.
+Including ArxivHandler, CrossrefHandler and TitleHandler.
 
-- ArxivAdapter match arXiv id
-- CrossrefAdapter match DOI
-- TitleAdapter will first perform an exact match in Crossref,
+- ArxivHandler match arXiv id
+- CrossrefHandler match DOI
+- TitleHandler will first perform an exact match in Crossref,
   and if not, match in arXiv
 
 """
@@ -16,13 +16,13 @@ from typing import Optional
 
 from bs4 import BeautifulSoup
 
-from markurl.adapter.model import Info, Adapter
+from markurl.handler.model import Info, Handler
 from markurl.util import SESS, quote_url, clear_str
 
 logger = logging.getLogger('markurl')
 
 
-class ArxivAdapter(Adapter):
+class ArxivHandler(Handler):
     base_url = "http://export.arxiv.org/api/query?search_query=id:{}"
 
     @classmethod
@@ -78,7 +78,7 @@ class ArxivAdapter(Adapter):
         )
 
 
-class CrossrefAdapter(Adapter):
+class CrossrefHandler(Handler):
     base_url = "http://api.crossref.org/works/{}"
 
     @classmethod
@@ -140,7 +140,7 @@ class CrossrefAdapter(Adapter):
         )
 
 
-class TitleAdapter(Adapter):
+class TitleHandler(Handler):
     arxiv_url = "http://export.arxiv.org/api/query?search_query=ti:{}"
     crossref_url = "http://api.crossref.org/works?query.bibliographic={}&rows=20"
 
@@ -157,7 +157,7 @@ class TitleAdapter(Adapter):
             for entry in soup.find_all('entry'):
                 title = entry.find_all('title')[0].text.strip()
                 if re.search(f"{query.lower()}", title.lower()):
-                    return ArxivAdapter.get_info_from_entry(entry)
+                    return ArxivHandler.get_info_from_entry(entry)
         except Exception:
             logger.exception(f"arXiv Title: {query} not found")
 
@@ -170,15 +170,15 @@ class TitleAdapter(Adapter):
             resp = SESS.get(url).json()['message']
             for item in resp['items']:
                 if item['title'][0].lower() == query.lower():
-                    return CrossrefAdapter.get_info_from_item(item)
+                    return CrossrefHandler.get_info_from_item(item)
         except Exception:
             logger.exception(f"Crossref Title: {query} not found")
 
         return None
 
 
-adapters = (
-    ArxivAdapter,
-    CrossrefAdapter,
-    TitleAdapter,
+handlers = (
+    ArxivHandler,
+    CrossrefHandler,
+    TitleHandler,
 )

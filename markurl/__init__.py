@@ -6,3 +6,5 @@ from pathlib import Path
 PROJECT = HERE = Path(__file__).parent
 ROOT = HERE.parent
 CONFIG = ROOT / 'config.json'
+MARKFILE = ROOT / 'markfile.md'
+OUTPUTFILE = ROOT / 'output.md'

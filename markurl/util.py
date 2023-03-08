@@ -19,17 +19,7 @@ logger.setLevel(logging.DEBUG)
 cfg = Config.load_config()
 HEADERS = cfg.get('http', {}).get('headers', {})
 PROXIES = cfg.get('http', {}).get('proxies', {})
-
-# HEADERS = {
-#     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.63'
-# }
-# PROXIES = {
-#     'http': 'http://127.0.0.1:7890',
-#     'https': 'http://127.0.0.1:7890'
-# }
 SESS = requests.Session()
-# SESS.headers = HEADERS
-# SESS.proxies = PROXIES
 if HEADERS:
     SESS.headers = HEADERS
 if PROXIES:
@@ -38,7 +28,7 @@ if PROXIES:
 
 def get_html(url: str) -> Response:
     """
-    Get HTML content from arxiv URL
+    Get HTTP(S) Response from URL
     """
     try:
         r = SESS.get(url)

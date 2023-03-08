@@ -5,9 +5,9 @@ Main
 
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 
-from markurl.adapter import paper
-from markurl.adapter import video
-from markurl.adapter.model import AdapterManager
+from markurl.handler import paper
+from markurl.handler import video
+from markurl.handler.model import HandlerManager
 
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 parser.add_argument(
@@ -15,17 +15,17 @@ parser.add_argument(
     type=str,
     help="the url of resource"
 )
-am = AdapterManager()
-am.extend(
-    *video.adapters,
-    *paper.adapters,
+hm = HandlerManager()
+hm.extend(
+    *video.handlers,
+    *paper.handlers,
 )
 
 
 def main():
     args = parser.parse_args()
     url = args.url
-    info = am.adapt(url)
+    info = hm.handle(url)
     if info:
         print(info)
     else:
