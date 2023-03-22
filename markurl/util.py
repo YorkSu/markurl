@@ -16,13 +16,16 @@ from markurl.config import Config
 logging.basicConfig()
 logger = logging.getLogger('markurl')
 logger.setLevel(logging.DEBUG)
+
+# parse config
 cfg = Config.load_config()
-HEADERS = cfg.get('http', {}).get('headers', {})
-PROXIES = cfg.get('http', {}).get('proxies', {})
+http_cfg = cfg.get('http', {})
+HEADERS = http_cfg.get('headers', {})
+PROXIES = http_cfg.get('proxies', {})
 SESS = requests.Session()
 if HEADERS:
     SESS.headers = HEADERS
-if PROXIES:
+if PROXIES.get('enable'):
     SESS.proxies = PROXIES
 
 
