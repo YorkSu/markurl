@@ -23,6 +23,7 @@ logger = logging.getLogger('markurl')
 
 class BilibiliHandler(Handler):
     base_url = 'https://www.bilibili.com/video/{}'
+    b_pattern = r'(https?://(?:www\.bilibili\.com/video/BV\S{10}|b23\.tv/\S{7}))'
 
     @classmethod
     def get(cls, url: str) -> Optional[Info]:
@@ -39,10 +40,7 @@ class BilibiliHandler(Handler):
             return cls.base_url.format(url)
 
         # Extract url from string
-        search = re.findall(
-            r'(https?://(?:www\.bilibili\.com/video/BV\S{10}|b23\.tv/\S{7}))',
-            url
-        )
+        search = re.findall(cls.b_pattern, url)
         return search[0] if len(search) else ''
 
     @staticmethod
@@ -70,27 +68,25 @@ class BilibiliHandler(Handler):
 
 class YouTubeHandler(Handler):
     base_url = 'https://www.youtube.com/watch?v={}'
+    y2b_pattern = r"(?:https?://)?(?:www\.)?(?:youtube\.com/watch\?v=|youtu\.be/)([-\w]+)"
 
     @classmethod
     def get(cls, url: str) -> Optional[Info]:
-        _url = cls.get_url(url)
-        if _url:
-            return cls.get_info(_url)
+        video = cls.get_url(url)
+        if video:
+            return cls.get_info(video)
 
         return None
 
     @classmethod
     def get_url(cls, url: str) -> str:
-        youtube_regex = r"(?:https?://)?(?:www\.)?(?:youtube\.com/watch\?v=|youtu\.be/)([-\w]+)"
-        matches = re.findall(youtube_regex, url)
-        if len(matches):
-            return cls.base_url.format(matches[0])
-
-        return ''
+        search = re.findall(cls.y2b_pattern, url)
+        return search[0] if len(search) else ''
 
     @classmethod
-    def get_info(cls, url: str) -> Optional[Info]:
+    def get_info(cls, video: str) -> Optional[Info]:
         try:
+            url = cls.base_url.format(video)
             yt = YouTube(url, proxies=PROXIES)
             return Info(
                 type='Video',

@@ -24,6 +24,8 @@ logger = logging.getLogger('markurl')
 
 class ArxivHandler(Handler):
     base_url = "http://export.arxiv.org/api/query?search_query=id:{}"
+    id_pattern = r'^(\d{4}\.\d{4,5})(?:v\d+)?'
+    url_pattern = r'arxiv\.org\/(?:abs|pdf)\/(\d{4}\.\d{4,5})(?:v\d+)?'
 
     @classmethod
     def get(cls, url: str) -> Optional[Info]:
@@ -33,13 +35,10 @@ class ArxivHandler(Handler):
 
         return None
 
-    @staticmethod
-    def get_id(url: str) -> str:
-        id_pattern = r'^(\d{4}\.\d{4,5})(?:v\d+)?'
-        url_pattern = r'arxiv\.org\/(?:abs|pdf)\/(\d{4}\.\d{4,5})(?:v\d+)?'
-
-        id_search = re.findall(id_pattern, url)
-        url_search = re.findall(url_pattern, url)
+    @classmethod
+    def get_id(cls, url: str) -> str:
+        id_search = re.findall(cls.id_pattern, url)
+        url_search = re.findall(cls.url_pattern, url)
 
         if len(id_search):
             return id_search[0]
@@ -80,6 +79,7 @@ class ArxivHandler(Handler):
 
 class CrossrefHandler(Handler):
     base_url = "http://api.crossref.org/works/{}"
+    id_pattern = r'(10[.][0-9]{4,}(?:[.][0-9]+)*\/[^\s]+)'
 
     @classmethod
     def get(cls, url: str) -> Optional[Info]:
@@ -89,15 +89,10 @@ class CrossrefHandler(Handler):
 
         return None
 
-    @staticmethod
-    def get_id(url: str) -> str:
-        id_pattern = r'(10[.][0-9]{4,}(?:[.][0-9]+)*\/[^\s]+)'
-        id_search = re.findall(id_pattern, url)
-
-        if len(id_search):
-            return id_search[0]
-
-        return ''
+    @classmethod
+    def get_id(cls, url: str) -> str:
+        id_search = re.findall(cls.id_pattern, url)
+        return id_search[0] if len(id_search) else ''
 
     @classmethod
     def get_info_by_doi(cls, doi: str) -> Optional[Info]:

@@ -36,11 +36,7 @@ class AnswerHandler(Handler):
     @classmethod
     def get_qna(cls, url: str) -> (str, str):
         search = re.findall(cls._pattern, url)
-
-        if len(search):
-            return search[0]
-
-        return None
+        return search[0] if len(search) else ''
 
     @classmethod
     def get_info(cls, q: str, a: str) -> Optional[Info]:
@@ -83,11 +79,7 @@ class ZhuanlanHandler(Handler):
     @classmethod
     def get_page(cls, url: str) -> str:
         search = re.findall(cls._pattern, url)
-
-        if len(search):
-            return search[0]
-
-        return ''
+        return search[0] if len(search) else ''
 
     @classmethod
     def get_info(cls, page: str) -> Optional[Info]:
@@ -112,3 +104,9 @@ class ZhuanlanHandler(Handler):
             logger.exception(f"Zhihu Zhuanlan: {url} not found")
 
         return None
+
+
+handlers = (
+    AnswerHandler,
+    ZhuanlanHandler,
+)
