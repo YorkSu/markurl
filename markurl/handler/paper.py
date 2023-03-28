@@ -175,5 +175,4 @@ class TitleHandler(Handler):
 handlers = (
     ArxivHandler,
     CrossrefHandler,
-    TitleHandler,
 )

@@ -2,28 +2,15 @@
 from markurl.handler import paper
 from markurl.handler import video
 from markurl.handler import zhihu
+from markurl.handler import bilibili
 from markurl.handler.model import HandlerManager
 
 default_hm = HandlerManager()
 default_hm.extend(
+    *bilibili.handlers,
+    *zhihu.handlers,
     *video.handlers,
     *paper.handlers,
-    *zhihu.handlers,
-)
-
-video_hm = HandlerManager()
-video_hm.extend(
-    *video.handlers
-)
-
-paper_hm = HandlerManager()
-paper_hm.extend(
-    *paper.handlers
-)
-
-zhihu_hm = HandlerManager()
-zhihu_hm.extend(
-    *zhihu.handlers
 )
 
 

@@ -58,7 +58,7 @@ class AnswerHandler(Handler):
                 url=url
             )
         except Exception:
-            logger.exception(f"Zhihu Q&A: {url} not found")
+            logger.exception(f"Zhihu Q&A: {url} not found; 也许需要手动打开浏览器进行知乎验证")
 
         return None
 
@@ -101,7 +101,7 @@ class ZhuanlanHandler(Handler):
                 url=url
             )
         except Exception:
-            logger.exception(f"Zhihu Zhuanlan: {url} not found")
+            logger.exception(f"Zhihu Zhuanlan: {url} not found; 也许需要手动打开浏览器进行知乎验证")
 
         return None
 
