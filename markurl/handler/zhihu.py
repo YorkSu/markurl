@@ -34,9 +34,9 @@ class AnswerHandler(Handler):
         return None
 
     @classmethod
-    def get_qna(cls, url: str) -> (str, str):
+    def get_qna(cls, url: str) -> Optional[str, str]:
         search = re.findall(cls._pattern, url)
-        return search[0] if len(search) else ''
+        return search[0] if len(search) else None
 
     @classmethod
     def get_info(cls, q: str, a: str) -> Optional[Info]:
