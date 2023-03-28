@@ -10,7 +10,7 @@ Including AnswerHandler.
 
 import logging
 import re
-from typing import Optional
+from typing import Optional, Sequence
 
 from bs4 import BeautifulSoup
 
@@ -34,7 +34,7 @@ class AnswerHandler(Handler):
         return None
 
     @classmethod
-    def get_qna(cls, url: str) -> Optional[str, str]:
+    def get_qna(cls, url: str) -> Optional[Sequence[str]]:
         search = re.findall(cls._pattern, url)
         return search[0] if len(search) else None
 
