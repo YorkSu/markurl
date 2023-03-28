@@ -5,9 +5,7 @@ Main
 
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 
-from markurl.handler import paper
-from markurl.handler import video
-from markurl.handler.model import HandlerManager
+from markurl.core import default_hm
 
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 parser.add_argument(
@@ -15,17 +13,12 @@ parser.add_argument(
     type=str,
     help="the url of resource"
 )
-hm = HandlerManager()
-hm.extend(
-    *video.handlers,
-    *paper.handlers,
-)
 
 
 def main():
     args = parser.parse_args()
     url = args.url
-    info = hm.handle(url)
+    info = default_hm.handle(url)
     if info:
         print(info)
     else:
