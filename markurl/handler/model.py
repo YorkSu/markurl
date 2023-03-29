@@ -42,18 +42,38 @@ class Info(object):
     def pattern(self):
         return cfg.get('markdown', {}).get('fmt', self._pattern)
 
+    @property
+    def pattern_basic(self):
+        return cfg.get('markdown', {}).get('fmt_basic', self._pattern)
+
     def to_markdown(self):
         additional = []
+        pattern = self.pattern_basic
+
+        if self.author is not None:
+            additional.append(f", {self.author}")
+        if self.date is not None:
+            additional.append(f", {self.date}")
+
         if self.pdf is not None:
             additional.append(f", [PDF]({self.pdf})")
         if self.citations is not None:
             additional.append(f", {self.citations}")
-        return self.pattern.format(
+
+        # return self.pattern.format(
+        #     type=self.type,
+        #     title=self.title,
+        #     author=self.author,
+        #     source=self.source,
+        #     date=self.date,
+        #     url=self.url,
+        #     additional=''.join(additional) if len(additional) else ''
+        # )
+
+        return pattern.format(
             type=self.type,
             title=self.title,
-            author=self.author,
             source=self.source,
-            date=self.date,
             url=self.url,
             additional=''.join(additional) if len(additional) else ''
         )
