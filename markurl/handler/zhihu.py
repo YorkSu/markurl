@@ -50,7 +50,7 @@ class AnswerHandler(Handler):
                 .find_all("span")[0].text.strip().split(' ')[1]
 
             return Info(
-                type='Answer',
+                type='Discussion',
                 title=clear_str(question),
                 author=clear_str(author),
                 source='知乎',
