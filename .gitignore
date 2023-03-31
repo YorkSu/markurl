@@ -13,7 +13,6 @@ config/
 logs/
 trash/
 dev/
-docs/
 data/
 
 # Byte-compiled / optimized / DLL files
