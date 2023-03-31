@@ -1,8 +1,13 @@
-# markurl
+<div align=center>
+<img src="./docs/logo.png" height=100px/>
+</div>
 
-[![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm.fming.dev)
+<h1 align="center">markurl</h1>
 
-A tool for generating formatted Markdown from URLs.
+<div align="center">
+<a href="https://pdm.fming.dev", target="_blank"><img src="https://img.shields.io/badge/pdm-managed-blueviolet"></a>
+<p>A tool for generating formatted Markdown from URLs.</p>
+</div>
 
 ## Usage
 
